@@ -7,7 +7,7 @@ VPATH = src
 all: myfind
 
 # GENERATE My Read Iso
-OBJS =
+OBJS = myfind.o
 
 #.PHONY: myreadiso
 myfind: $(OBJS)
