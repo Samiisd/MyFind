@@ -23,9 +23,9 @@ int led_op(int left_ctx)
     return left_ctx;
 }
 
-struct token *token_op(void)
+int add_token_op(void)
 {
-    return tok_build_token(SYMBOL_OP, BP_OP, nud_op, led_op);
+    return tok_util_add_expression(SYMBOL_OP, BP_OP, nud_op, led_op);
 }
 
 #endif /* OPENING_PARANTHESIS_H */

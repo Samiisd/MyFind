@@ -20,9 +20,9 @@ int led_cp(int left_ctx)
     return left_ctx;
 }
 
-struct token *token_cp(void)
+int add_token_cp(void)
 {
-    return tok_build_token(SYMBOL_CP, BP_CP, nud_cp, led_cp);
+    return tok_util_add_expression(SYMBOL_CP, BP_CP, nud_cp, led_cp);
 }
 
 #endif /* CLOSING_PARANTHESIS_H */

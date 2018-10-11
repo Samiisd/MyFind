@@ -7,7 +7,8 @@ VPATH = src src/hashmap src/tokenizer src/parser
 all: myfind
 
 # GENERATE My Read Iso
-OBJS = myfind.o hash_map.o tokenizer.o tokparsing.o expression.o
+OBJS = 	myfind.o hash_map.o tokenizer.o tokparsing.o expression.o util.o\
+		options.o
 
 #.PHONY: myreadiso
 myfind: $(OBJS)

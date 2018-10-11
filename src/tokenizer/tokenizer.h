@@ -32,7 +32,7 @@ int tok_add_token(struct token *tok);
 struct token *tok_find_token(const char *tok_symbol);
 void tok_free(void);
 
-void tok_start(char **splitted_str, size_t nb_str, const struct token *tok_def);
+void tok_start(char **splitted_str, size_t nb_str);
 
 const struct token *tok_peek(void);
 const struct token *tok_next(void);

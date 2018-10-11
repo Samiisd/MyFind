@@ -14,12 +14,11 @@ static struct tok_stream stream =
     0
 };
 
-void tok_start(char **splitted_str, size_t nb_str, const struct token *tok_def)
+void tok_start(char **splitted_str, size_t nb_str)
 {
     stream.arr = splitted_str;
     stream.size = nb_str;
     stream.index = 0;
-    stream.tok_def = tok_def;
 }
 
 static const struct token *tok_get(size_t index)
