@@ -1,7 +1,7 @@
-- Expression Parser : NO
+- Expression Parser : YES
     - Hash Map      : YES
-    - Tokenizer     : NO
-    - Pratt Parser  : NO
+    - Tokenizer     : YES
+    - Pratt Parser  : YES
 
 - Threshold 0 : NO
 - Threshold 1 : NO
