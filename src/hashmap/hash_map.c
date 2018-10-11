@@ -7,14 +7,13 @@ static size_t hash_function(const char *key, size_t table_size)
 {
     size_t hash = 5381;
 
-    size_t i = 0;
-    for (; key[i] != '\0'; ++i)
+    for (size_t i = 0; key[i] != '\0'; i++)
         hash = ((hash << 5) + hash) + key[i];
 
     return hash % table_size;
 }
 
-struct hash_map *hash_init(size_t size)
+struct hash_map *hash_init(size_t size, free_fnct free_val)
 {
     struct hash_map *h = malloc(sizeof(struct hash_map));
     if (!h)
@@ -28,15 +27,18 @@ struct hash_map *hash_init(size_t size)
     }
 
     h->size = size;
+    h->free_val = free_val;
 
     return h;
 }
 
-static void free_hash_slot(struct hash_slot *slot)
+static void free_hash_slot(struct hash_slot *slot, free_fnct free_val)
 {
     if (!slot)
         return;
-    free_hash_slot(slot->next);
+    free_hash_slot(slot->next, free_val);
+
+    free_val(slot->val);
     free(slot);
 }
 
@@ -46,7 +48,8 @@ void hash_free(struct hash_map *map)
         return;
 
     for(size_t i = 0; i < map->size; i++)
-        free_hash_slot(map->slots[i]);
+        free_hash_slot(map->slots[i], map->free_val);
+
     free(map->slots);
     free(map);
 }
