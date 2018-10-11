@@ -31,34 +31,40 @@ static const struct token *tok_get(size_t index)
 
     return found;
 }
+
 const struct token *tok_peek(void)
 {
-    if (stream.index + 1 >= stream.size)
+    if (stream.index >= stream.size)
         return NULL;
 
-    return tok_get(stream.index + 1);
+    return tok_get(stream.index);
 }
 
 const struct token *tok_next(void)
 {
-    if (stream.index + 1 >= stream.size)
+    if (stream.index >= stream.size)
         return NULL;
 
     return tok_get(stream.index++);
 }
 
-const char *tok_peek_str(void)
-{
-    if (stream.index + 1 >= stream.size)
-        return NULL;
-    
-    return stream.arr[stream.index + 1];
-}
-
 const char *tok_next_str(void)
 {
-    if (stream.index + 1 >= stream.size)
+    if (stream.index >= stream.size)
         return NULL;
-    
+
     return stream.arr[stream.index++];
+}
+
+const char *tok_at_str(size_t index)
+{
+    if (index >= stream.size)
+        return NULL;
+
+    return stream.arr[index];
+}
+
+size_t tok_cur_index(void)
+{
+    return stream.index;
 }
