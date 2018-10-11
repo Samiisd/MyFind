@@ -1,3 +1,22 @@
 # My Find
 
+# Description :
+
 myfind is a simplified version of find(1).
+
+
+# Compilation :
+
+The compilation is done using "make", for now there are 3 rules available :
+
+- all   : Compile the project, building the binary "myfind"
+
+- check : Launch a test suite to find errors.
+          If "myfind" is not build yet, it builds it.
+
+- clean : Remove all files created by other rules
+
+
+# Author :
+
+Sami Issaadi, actually a first year engineering student.
