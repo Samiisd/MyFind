@@ -46,3 +46,19 @@ const struct token *tok_next(void)
 
     return tok_get(stream.index++);
 }
+
+const char *tok_peek_str(void)
+{
+    if (stream.index + 1 >= stream.size)
+        return NULL;
+    
+    return stream.arr[stream.index + 1];
+}
+
+const char *tok_next_str(void)
+{
+    if (stream.index + 1 >= stream.size)
+        return NULL;
+    
+    return stream.arr[stream.index++];
+}

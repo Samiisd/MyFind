@@ -23,5 +23,7 @@ void tok_free(void);
 void tok_start(char **splitted_str, size_t nb_str, const struct token *tok_def);
 const struct token *tok_peek(void);
 const struct token *tok_next(void);
+const char *tok_next_str(void);
+const char *tok_peek_str(void);
 
 #endif /* TOKENIZER_H */
