@@ -1,14 +1,58 @@
-- Expression Parser : YES
+- Parser : YES
     - Hash Map      : YES
     - Tokenizer     : YES
     - Pratt Parser  : YES
 
+- Command line parsing  : YES
+    - Options       : YES
+    - Directories   : YES
+    - Expressions   : YES
+
 - Threshold 0 : NO
+    - parsing 0 or more command line arguments              : YES
+    - Printing recursively filenames in given directories   : NO
+
 - Threshold 1 : NO
+    - parsing 0 or more options command line arguments  : YES
+    - handling all options                              : YES
+    - taking into account parsed options                : NO
+
 - Threshold 2 : NO
+    - handling 0 or 1 expression            : YES
+    - handling "-name" & "-type"            : NO
+    - taking into account the expression    : NO
+
 - Threshold 3 : NO
+    - handling 0 or more expression         : YES
+    - handling all expressions              : NO
+        - Or "-o"           : NO
+        - And "-a"          : NO
+        - Print "-print"    : NO
+    - taking into account all expressions   : NO
+
 - Threshold 4 : NO
+    - handling all expressions  : NO
+        - Exec "-exec command ;"          : NO
+        - Execdir "-execdir command ;"    : NO
+    - avoid leaks before exec   : NO
+        - closing opened filedescriptors    : NO
+        - cleaning zombie processes         : NO
+
 - Threshold 5 : NO
+    - Operator precedences      : YES
+    - handling all expressions  : NO
+        - Not "!"           : NO
+        - Parentheses "()"  : ALMOST
+
 - Threshold 6 : NO
+    - handling all expressions : NO
+        - Exec + "-exec command {} +"   : NO
+        - Delete "-delete"              : NO
+        - Perm "-perm"                  : NO
+        - User and Groups               : NO
+        - Newer "-newer"                : NO
 
 - Test Suite : NO
+    - Bash script   : YES
+    - Simple tests  : 1 (not enough)
+    - Hard tests    : NO
