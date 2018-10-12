@@ -27,7 +27,7 @@ int cmd_option_init(void)
 
 void cmd_option_parse(struct file_explorer *fe)
 {
-    printf("parsing options : ");
+    printf("> parsing options : ");
     const struct token *curr;
     while ((curr = tok_peek()) && curr->type == OPTION)
     {
@@ -42,7 +42,7 @@ void cmd_option_parse(struct file_explorer *fe)
 /* Files parsing */
 struct vector *cmd_file_parse(void)
 {
-    printf("parsing files : ");
+    printf("> parsing files : ");
     struct vector *v = vector_init(FILE_CAPACITY, NULL);
     if (!v)
         errx(1, ERR_NO_MEMORY_AVAILABLE, "file parsing");
@@ -67,4 +67,24 @@ struct vector *cmd_file_parse(void)
         errx(1, ERR_NO_MEMORY_AVAILABLE, "file parsing");
 
     return v;
+}
+
+/* Expression parsing */
+#include "expression/parser.h"
+
+struct tree_node *cmd_expression_parse(void)
+{
+    printf("> parsing expressions : ");
+
+    const struct token *curr = tok_peek();
+    if (!curr || curr->type != EXPRESSION)
+    {
+        printf("\n");
+        return NULL;
+    }
+
+    struct tree_node *ast = expression_parse(0);
+    printf("\n");
+
+    return ast;
 }

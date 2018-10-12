@@ -27,6 +27,15 @@ void tok_start(char **splitted_str, size_t nb_str)
         errx(1, ERR_NO_MEMORY_AVAILABLE, "init tokenizer engine");
 }
 
+void tok_stop()
+{
+    stream.arr = NULL;
+    stream.size = 0;
+    stream.index = 0;
+
+    free(stream.tok_unknown);
+}
+
 static const struct token *tok_get(size_t index)
 {
     const struct token *found = tok_find_token(stream.arr[index]);

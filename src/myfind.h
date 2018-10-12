@@ -3,21 +3,17 @@
 
 #include <stdint.h>
 
+#include "expression/tree.h"
+
 struct file_explorer
 {
+    struct tree_node *ast;
     int8_t options;
 };
 
 /* File Explorer */
-static inline struct file_explorer fe_init()
-{
-    struct file_explorer fe =
-    {
-        0
-    };
-
-    return fe;
-}
+struct file_explorer *fe_init();
+void fe_free(struct file_explorer *fe);
 
 /* OPTIONS */
 #define OPTION_FOLLOW_SYM (1)

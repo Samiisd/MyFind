@@ -3,7 +3,7 @@
 
 #include <err.h>
 
-void *parse_expression(int mbp)
+void *expression_parse(int mbp)
 {
     const struct token *curr = tok_next();
     if (!curr || curr->type != EXPRESSION)
