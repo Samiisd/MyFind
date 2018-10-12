@@ -1,12 +1,14 @@
 #include "tokenizer.h"
 
+#include "errors.h"
+
 struct tok_stream
 {
     char **arr;
     size_t size;
     size_t index;
 
-    const struct token *tok_def;
+    struct token *tok_unknown;
 };
 
 static struct tok_stream stream =
@@ -19,6 +21,10 @@ void tok_start(char **splitted_str, size_t nb_str)
     stream.arr = splitted_str;
     stream.size = nb_str;
     stream.index = 0;
+
+    stream.tok_unknown = calloc(1, sizeof(struct token *));
+    if (!stream.tok_unknown)
+        errx(1, ERR_NO_MEMORY_AVAILABLE, "init tokenizer engine");
 }
 
 static const struct token *tok_get(size_t index)
@@ -26,7 +32,12 @@ static const struct token *tok_get(size_t index)
     const struct token *found = tok_find_token(stream.arr[index]);
 
     if (!found)
-        return stream.tok_def;
+    {
+        stream.tok_unknown->symbol = stream.arr[index];
+        stream.tok_unknown->type = UNKNOWN;
+
+        return stream.tok_unknown;
+    }
 
     return found;
 }
@@ -47,7 +58,7 @@ const struct token *tok_next(void)
     return tok_get(stream.index++);
 }
 
-const char *tok_next_str(void)
+char *tok_next_str(void)
 {
     if (stream.index >= stream.size)
         return NULL;
@@ -55,7 +66,7 @@ const char *tok_next_str(void)
     return stream.arr[stream.index++];
 }
 
-const char *tok_at_str(size_t index)
+char *tok_at_str(size_t index)
 {
     if (index >= stream.size)
         return NULL;

@@ -6,8 +6,8 @@
 
 #define TOK_MAP_SIZE 50
 
-typedef int (*nud_fnct)(void);
-typedef int (*led_fnct)(int left_ctx);
+typedef void *(*nud_fnct)(void);
+typedef void *(*led_fnct)(void *left_ctx);
 
 enum type
 {
@@ -18,7 +18,7 @@ enum type
 
 struct token
 {
-    const char *symbol;
+    char *symbol;
     enum type type;
 
     int bp; /* Binding power of the token */
@@ -36,12 +36,12 @@ void tok_start(char **splitted_str, size_t nb_str);
 
 const struct token *tok_peek(void);
 const struct token *tok_next(void);
-const char *tok_next_str(void);
-const char *tok_at_str(size_t index);
+char *tok_next_str(void);
+char *tok_at_str(size_t index);
 size_t tok_cur_index(void);
 
-int tok_util_add_option(const char *symbole);
-int tok_util_add_expression(const char *symbole, int bp, nud_fnct nud,
+int tok_util_add_option(char *symbole);
+int tok_util_add_expression(char *symbole, int bp, nud_fnct nud,
                             led_fnct led);
 
 #endif /* TOKENIZER_H */

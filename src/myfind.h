@@ -3,36 +3,30 @@
 
 #include <stdint.h>
 
-#include "tokenizer/tokenizer.h"
-
 struct file_explorer
 {
     int8_t options;
 };
 
-/* Options Handling */
+/* File Explorer */
+static inline struct file_explorer fe_init()
+{
+    struct file_explorer fe =
+    {
+        0
+    };
+
+    return fe;
+}
+
+/* OPTIONS */
 #define OPTION_FOLLOW_SYM (1)
 #define OPTION_FOLLOW_SYM_CMD (1 << 1)
 #define OPTION_PRE_ORDER (1 << 2)
 
-int fe_option_init(void);
-void fe_option_set(struct file_explorer *fe, const char *option);
-void fe_option_parse(struct file_explorer *fe);
-
-static inline int fe_option_follow_sym(struct file_explorer *fe)
-{
-    return (fe->options & OPTION_FOLLOW_SYM) != 0;
-}
-
-static inline int fe_option_follow_sym_cmd(struct file_explorer *fe)
-{
-    return (fe->options & OPTION_FOLLOW_SYM_CMD) != 0;
-}
-
-static inline int fe_option_pre_order(struct file_explorer *fe)
-{
-    return (fe->options & OPTION_PRE_ORDER) != 0;
-}
-
+void option_set(struct file_explorer *fe, const char *option);
+int option_follow_sym(struct file_explorer *fe);
+int option_follow_sym_cmd(struct file_explorer *fe);
+int option_pre_order(struct file_explorer *fe);
 
 #endif /* MYFIND_H */

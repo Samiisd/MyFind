@@ -1,25 +1,6 @@
 #include "myfind.h"
 
-#define NB_OPTIONS 4
-
-int fe_option_init(void)
-{
-    const char *available_options[NB_OPTIONS] =
-    {
-        "-d", "-H", "-L", "-P"
-    };
-
-    size_t i = 0;
-    for (; i < NB_OPTIONS; i++)
-    {
-        if (!tok_util_add_option(available_options[i]))
-            break;
-    }
-
-    return i == NB_OPTIONS;
-}
-
-void fe_option_set(struct file_explorer *fe, const char *option)
+void option_set(struct file_explorer *fe, const char *option)
 {
     switch (option[1])
     {
@@ -28,6 +9,7 @@ void fe_option_set(struct file_explorer *fe, const char *option)
             break;
 
         case 'H':
+            fe->options &= ~OPTION_FOLLOW_SYM;
             fe->options |= OPTION_FOLLOW_SYM_CMD;
             break;
 
@@ -41,12 +23,17 @@ void fe_option_set(struct file_explorer *fe, const char *option)
     }
 }
 
-void fe_option_parse(struct file_explorer *fe)
+int option_follow_sym(struct file_explorer *fe)
 {
-    const struct token *curr;
-    while ((curr = tok_peek()) && curr->type == OPTION)
-    {
-        curr = tok_next();
-        fe_option_set(fe, curr->symbol);
-    }
+    return (fe->options & OPTION_FOLLOW_SYM) != 0;
+}
+
+int option_follow_sym_cmd(struct file_explorer *fe)
+{
+    return (fe->options & OPTION_FOLLOW_SYM_CMD) != 0;
+}
+
+int option_pre_order(struct file_explorer *fe)
+{
+    return (fe->options & OPTION_PRE_ORDER) != 0;
 }
