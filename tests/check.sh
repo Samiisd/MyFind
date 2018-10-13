@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # -- Function definitions --
 print_success(){
@@ -42,9 +42,8 @@ do
     touch $stdout_totest
 
     argument=$(cat "$1/$test_file")
-
-    $(find $argument 1> $stdout_corr 2> /dev/null)
-    $($2 $argument 1> $stdout_totest 2> /dev/null)
+    eval "find $argument" 1> $stdout_corr 2> /dev/null
+    eval "$2 $argument"  1> $stdout_totest 2> /dev/null
 
     stdout_log=$(diff "$stdout_corr" "$stdout_totest")
 
@@ -54,7 +53,7 @@ do
         echo $stdout_log > "$3/log_stdout_$nb_tests"
     else
         print_success "OK"
-        rm $stdout_corr $stdout_totest
+#        rm $stdout_corr $stdout_totest
     fi
     echo
 
@@ -73,7 +72,7 @@ if [ $nb_tests_failed -ne 0 ]; then
     exit 0
 fi
 
-$(rm -fr "$3")
+#rm -fr "$3"
 print_success "All tests passed successfully!"
 echo
 
