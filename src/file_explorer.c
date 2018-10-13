@@ -4,6 +4,7 @@
 #include "errors.h"
 #include "string/string.h"
 
+#include <fnmatch.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -28,7 +29,7 @@ void fe_free(struct file_explorer *fe)
     free(fe);
 }
 
-static int run_ast_filter(struct file_explorer *fe, const char *pathname,
+static int run_ast_filter(struct file_explorer *fe, const struct string *path,
                           const struct ast_node *ast)
 {
     if (!ast)
@@ -37,17 +38,20 @@ static int run_ast_filter(struct file_explorer *fe, const char *pathname,
     switch (ast->type)
     {
         case TOKEN_ACTION_PRINT:
-            printf("%s\n", pathname);
+            printf("%s\n", path->buffer);
             return 1;
+        case TOKEN_TEST_NAME:
+            return fnmatch(ast->data[0], path->buffer +
+                           string_search_last(path, '/') + 1, 0) == 0;
         case TOKEN_OPERATOR_AND:
-            return run_ast_filter(fe, pathname, ast->left) &&
-                   run_ast_filter(fe, pathname, ast->right);
+            return run_ast_filter(fe, path, ast->left) &&
+                   run_ast_filter(fe, path, ast->right);
         case TOKEN_OPERATOR_OR:
-            return run_ast_filter(fe, pathname, ast->left) ||
-                   run_ast_filter(fe, pathname, ast->right);
+            return run_ast_filter(fe, path, ast->left) ||
+                   run_ast_filter(fe, path, ast->right);
     }
 
-    return 0; /* WARNING : debug trick, must return 0 here */
+    return 0;
 }
 
 static int str_cmp(const char *s1, const char *s2)
@@ -67,7 +71,7 @@ static int fe_handle_files(struct file_explorer *fe, struct string *dirpath,
 static int fe_handle_dirs(struct file_explorer *fe, struct string *dirpath)
 {
     if (!option_pre_order(fe))
-        run_ast_filter(fe, dirpath->buffer, fe->ast);
+        run_ast_filter(fe, dirpath, fe->ast);
 
     int dirpath_len = string_size(dirpath);
     
@@ -85,7 +89,7 @@ static int fe_handle_dirs(struct file_explorer *fe, struct string *dirpath)
     if (option_pre_order(fe))
     {
         string_resize(dirpath, dirpath_len);
-        run_ast_filter(fe, dirpath->buffer, fe->ast);
+        run_ast_filter(fe, dirpath, fe->ast);
     }
 
     if (curr_dir)
@@ -112,7 +116,7 @@ static int fe_handle_file(struct file_explorer *fe, struct string *path,
     if (S_ISDIR(st.st_mode))
         return fe_handle_dirs(fe, path) && res;
 
-    return run_ast_filter(fe, path->buffer, fe->ast) && res;
+    return run_ast_filter(fe, path, fe->ast) && res;
 }
 
 static int fe_handle_files(struct file_explorer *fe, struct string *dirpath,

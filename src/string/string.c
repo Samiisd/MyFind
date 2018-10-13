@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-struct string *string_make(size_t capacity)
+struct string *string_make(int capacity)
 {
     struct string *str = malloc(sizeof(struct string));
     if (!str)
@@ -45,12 +45,12 @@ int string_append(struct string *str, const char *cstr)
     return *cstr == '\0';
 }
 
-size_t string_size(struct string *str)
+int string_size(struct string *str)
 {
     return str->index;
 }
 
-void string_resize(struct string *str, size_t new_size)
+void string_resize(struct string *str, int new_size)
 {
     if (new_size >= str->index)
         return;

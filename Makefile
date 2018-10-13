@@ -9,7 +9,7 @@ all: myfind
 # GENERATE My Find
 OBJS = 	myfind.o hash_map.o tokenizer.o tokparsing.o expression.o util.o\
 		options.o vector.o cmdline.o options.o ast.o file_explorer.o\
-		string.o
+		string.o stream.o search.o
 
 myfind: $(OBJS)
 

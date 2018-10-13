@@ -10,7 +10,7 @@ void *expression_parse(int mbp)
         return NULL;
 
     if (curr->type != EXPRESSION)
-        errx(1, ERR_INVALID_TOKEN, tok_at_str(tok_cur_index() - 1));
+        errx(1, ERR_INVALID_TOKEN, tok_at_str(tok_get_index()));
 
     curr = tok_next();
 
@@ -18,7 +18,7 @@ void *expression_parse(int mbp)
 
     curr = tok_peek();
     if (curr && curr->type != EXPRESSION)
-        errx(1, ERR_INVALID_TOKEN, tok_at_str(tok_cur_index() - 1));
+        errx(1, ERR_INVALID_TOKEN, tok_at_str(tok_get_index()));
 
     while (curr && curr->bp > mbp)
     {
@@ -29,7 +29,7 @@ void *expression_parse(int mbp)
         if (!curr)
             return left_ctx;
         if (curr->type != EXPRESSION)
-            errx(1, ERR_INVALID_TOKEN, tok_at_str(tok_cur_index() - 1));
+            errx(1, ERR_INVALID_TOKEN, tok_at_str(tok_get_index()));
     }
 
     return left_ctx;

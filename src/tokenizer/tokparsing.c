@@ -2,39 +2,7 @@
 
 #include "errors.h"
 
-struct tok_stream
-{
-    char **arr;
-    size_t size;
-    size_t index;
-
-    struct token *tok_unknown;
-};
-
-static struct tok_stream stream =
-{
-    0
-};
-
-void tok_start(char **splitted_str, size_t nb_str)
-{
-    stream.arr = splitted_str;
-    stream.size = nb_str;
-    stream.index = 0;
-
-    stream.tok_unknown = calloc(1, sizeof(struct token *));
-    if (!stream.tok_unknown)
-        errx(1, ERR_NO_MEMORY_AVAILABLE, "init tokenizer engine");
-}
-
-void tok_stop()
-{
-    stream.arr = NULL;
-    stream.size = 0;
-    stream.index = 0;
-
-    free(stream.tok_unknown);
-}
+extern struct tok_stream stream;
 
 static const struct token *tok_get(size_t index)
 {
@@ -81,9 +49,4 @@ char *tok_at_str(size_t index)
         return NULL;
 
     return stream.arr[index];
-}
-
-size_t tok_cur_index(void)
-{
-    return stream.index;
 }

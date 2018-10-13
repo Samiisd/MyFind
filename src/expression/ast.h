@@ -6,7 +6,7 @@
 struct ast_node
 {
     int type;
-    const char **data;
+    char **data;
     int nb_data;
 
     struct ast_node *left;

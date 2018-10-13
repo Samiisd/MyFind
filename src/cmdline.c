@@ -64,6 +64,7 @@ struct vector *cmd_file_parse(void)
 #include "expression/tokens/action_print.h"
 #include "expression/tokens/operator_and.h"
 #include "expression/tokens/operator_or.h"
+#include "expression/tokens/test_name.h"
 
 int cmd_expression_init(void)
 {
@@ -72,7 +73,9 @@ int cmd_expression_init(void)
               tok_util_add_expression("-a", BP_OP_AND, nud_operator_and,
                                       led_operator_and) &&
               tok_util_add_expression("-o", BP_OP_OR, nud_operator_or,
-                                      led_operator_or);
+                                      led_operator_or) &&
+              tok_util_add_expression("-name", BP_TEST_NAME, nud_test_name,
+                                      led_test_name);
     return res;
 }
 

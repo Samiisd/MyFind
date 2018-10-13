@@ -19,8 +19,9 @@
 
 - Threshold 2 : NO
     - handling 0 or 1 expression            : YES
-    - handling "-name" & "-type"            : NO
-    - taking into account the expression    : NO
+    - handling all expressions              : NO
+        - Type "-type"                      : NO
+        - Name "-name"                      : YES
 
 - Threshold 3 : YES
     - handling 0 or more expression         : YES
