@@ -65,6 +65,7 @@ struct vector *cmd_file_parse(void)
 #include "expression/tokens/operator_and.h"
 #include "expression/tokens/operator_or.h"
 #include "expression/tokens/test_name.h"
+#include "expression/tokens/test_type.h"
 
 int cmd_expression_init(void)
 {
@@ -76,6 +77,8 @@ int cmd_expression_init(void)
                                       led_operator_or) &&
               tok_util_add_expression("-name", BP_OP_AND, nud_test_name,
                                       led_test_name);
+              tok_util_add_expression("-type", BP_OP_AND, nud_test_type,
+                                      led_test_type);
     return res;
 }
 
@@ -90,10 +93,6 @@ static int contains_action(struct ast_node *ast)
 
 struct ast_node *cmd_expression_parse(void)
 {
-    //const struct token *curr = tok_peek();
-    //if (!curr || curr->type != EXPRESSION)
-    //    return NULL;
-
     struct ast_node *ast = expression_parse(0);
     if (!ast || !contains_action(ast))
         ast = ast_make(TOKEN_OPERATOR_AND, ast, nud_action_print());

@@ -4,6 +4,7 @@
 #include "errors.h"
 #include "string/string.h"
 
+#define _XOPEN_SOURCE 500
 #include <fnmatch.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -29,8 +30,31 @@ void fe_free(struct file_explorer *fe)
     free(fe);
 }
 
+static int test_handle_type(struct stat *st, const struct ast_node *ast)
+{
+    switch (ast->data[0][0])
+    {
+        case 'b':
+            return S_ISBLK(st->st_mode);
+        case 'c':
+            return S_ISCHR(st->st_mode);
+        case 'd':
+            return S_ISDIR(st->st_mode);
+        case 'f':
+            return S_ISREG(st->st_mode);
+        case 'l':
+            return S_ISLNK(st->st_mode);
+        case 'p':
+            return S_ISFIFO(st->st_mode);
+        case 's':
+            return S_ISSOCK(st->st_mode);
+    }
+
+    return 0;
+}
+
 static int run_ast_filter(struct file_explorer *fe, const struct string *path,
-                          const struct ast_node *ast)
+                          const struct ast_node *ast, struct stat *st)
 {
     if (!ast)
         return 1;
@@ -43,12 +67,14 @@ static int run_ast_filter(struct file_explorer *fe, const struct string *path,
         case TOKEN_TEST_NAME:
             return fnmatch(ast->data[0], path->buffer +
                            string_search_last(path, '/') + 1, 0) == 0;
+        case TOKEN_TEST_TYPE:
+            return test_handle_type(st, ast);
         case TOKEN_OPERATOR_AND:
-            return run_ast_filter(fe, path, ast->left) &&
-                   run_ast_filter(fe, path, ast->right);
+            return run_ast_filter(fe, path, ast->left, st) &&
+                   run_ast_filter(fe, path, ast->right, st);
         case TOKEN_OPERATOR_OR:
-            return run_ast_filter(fe, path, ast->left) ||
-                   run_ast_filter(fe, path, ast->right);
+            return run_ast_filter(fe, path, ast->left, st) ||
+                   run_ast_filter(fe, path, ast->right, st);
     }
 
     return 0;
@@ -62,16 +88,18 @@ static int str_cmp(const char *s1, const char *s2)
     return s1[i] == s2[i];
 }
 
-static int fe_handle_dirs(struct file_explorer *fe, struct string *dirpath);
+static int fe_handle_dirs(struct file_explorer *fe, struct string *dirpath,
+                          struct stat *st);
 static int fe_handle_file(struct file_explorer *fe, struct string *path,
                           int from_cmdline);
 static int fe_handle_files(struct file_explorer *fe, struct string *dirpath,
                            DIR *curr_dir);
 
-static int fe_handle_dirs(struct file_explorer *fe, struct string *dirpath)
+static int fe_handle_dirs(struct file_explorer *fe, struct string *dirpath,
+                          struct stat *st)
 {
     if (!option_pre_order(fe))
-        run_ast_filter(fe, dirpath, fe->ast);
+        run_ast_filter(fe, dirpath, fe->ast, st);
 
     int dirpath_len = string_size(dirpath);
     
@@ -89,7 +117,7 @@ static int fe_handle_dirs(struct file_explorer *fe, struct string *dirpath)
     if (option_pre_order(fe))
     {
         string_resize(dirpath, dirpath_len);
-        run_ast_filter(fe, dirpath, fe->ast);
+        run_ast_filter(fe, dirpath, fe->ast, st);
     }
 
     if (curr_dir)
@@ -114,9 +142,9 @@ static int fe_handle_file(struct file_explorer *fe, struct string *path,
     }
 
     if (S_ISDIR(st.st_mode))
-        return fe_handle_dirs(fe, path) && res;
+        return fe_handle_dirs(fe, path, &st) && res;
 
-    return run_ast_filter(fe, path, fe->ast) && res;
+    return run_ast_filter(fe, path, fe->ast, &st) && res;
 }
 
 static int fe_handle_files(struct file_explorer *fe, struct string *dirpath,

@@ -17,10 +17,10 @@
     - handling all options                              : YES
     - taking into account parsed options                : YES
 
-- Threshold 2 : NO
+- Threshold 2 : YES
     - handling 0 or 1 expression            : YES
-    - handling all expressions              : NO
-        - Type "-type"                      : NO
+    - handling all expressions              : YES
+        - Type "-type"                      : YES
         - Name "-name"                      : YES
 
 - Threshold 3 : YES
