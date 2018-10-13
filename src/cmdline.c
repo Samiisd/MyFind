@@ -66,10 +66,11 @@ struct vector *cmd_file_parse(void)
 
 int cmd_expression_init(void)
 {
-    if (!tok_util_add_expression("-print", 1, nud_action_print,
-        led_action_print))
-        return 0;
-    return 1;
+    int res = tok_util_add_expression("-print", 1, nud_action_print,
+                                      led_action_print) &&
+              tok_util_add_expression("-a", BP_OP_AND, nud_operator_and,
+                                      led_operator_and);
+    return res;
 }
 
 static int contains_action(struct ast_node *ast)
