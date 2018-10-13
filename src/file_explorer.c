@@ -38,6 +38,9 @@ static int run_ast_filter(struct file_explorer *fe, const char *pathname,
         case TOKEN_OPERATOR_AND:
             return run_ast_filter(fe, pathname, ast->left) &&
                    run_ast_filter(fe, pathname, ast->right);
+        case TOKEN_OPERATOR_OR:
+            return run_ast_filter(fe, pathname, ast->left) ||
+                   run_ast_filter(fe, pathname, ast->right);
     }
 
     return !fe; /* WARNING : debug trick, must return 0 here */

@@ -22,13 +22,13 @@
     - handling "-name" & "-type"            : NO
     - taking into account the expression    : NO
 
-- Threshold 3 : NO
+- Threshold 3 : YES
     - handling 0 or more expression         : YES
-    - handling all expressions              : NO
-        - Or "-o"           : NO
-        - And "-a"          : NO
+    - handling all expressions              : YES
+        - Or "-o"           : YES
+        - And "-a"          : YES
         - Print "-print"    : YES
-    - taking into account all expressions   : NO
+    - taking into account all expressions   : YES
 
 - Threshold 4 : NO
     - handling all expressions  : NO
