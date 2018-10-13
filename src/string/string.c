@@ -40,7 +40,11 @@ int string_append(struct string *str, const char *cstr)
 {
     while (*cstr && string_putchar(str, *(cstr++)))
         continue;
-    return *cstr == '\0';
+
+    if (!cstr)
+        return 0;
+    
+    return string_putchar(str, '\0');
 }
 
 size_t string_size(struct string *str)
@@ -50,7 +54,10 @@ size_t string_size(struct string *str)
 
 void string_resize(struct string *str, size_t new_size)
 {
+    if (new_size >= str->index)
+        return;
     str->index = new_size;
+    string_putchar(str, '\0');
 }
 
 void string_free(struct string *str)
