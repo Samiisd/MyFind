@@ -38,6 +38,9 @@ do
     stdout_corr="$3/test_"$nb_tests"_correct_stdout"
     stdout_totest="$3/test_"$nb_tests"_totest_stdout"
 
+    touch $stdout_corr
+    touch $stdout_totest
+
     argument=$(cat "$1/$test_file")
 
     $(find $argument 1> $stdout_corr 2> /dev/null)
@@ -48,10 +51,10 @@ do
     if [ $? -ne 0 ]; then
         nb_tests_failed=$((nb_tests_failed + 1))
         print_error "FAILED"
-        $(echo $stdout_log > "$3/log_stdout_$nb_tests");
+        echo $stdout_log > "$3/log_stdout_$nb_tests"
     else
         print_success "OK"
-        $("rm $stdout_corr $stdout_totest")
+        rm $stdout_corr $stdout_totest
     fi
     echo
 
