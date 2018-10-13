@@ -3,7 +3,6 @@
 #include "errors.h"
 #include "myfind.h"
 
-#include <stdio.h> /* WARNING : useless here */
 #include <stddef.h>
 #include <err.h>
 
@@ -27,22 +26,17 @@ int cmd_option_init(void)
 
 void cmd_option_parse(struct file_explorer *fe)
 {
-    printf("> parsing options : ");
     const struct token *curr;
     while ((curr = tok_peek()) && curr->type == OPTION)
     {
         curr = tok_next();
-        printf("%s ", curr->symbol);
         option_set(fe, curr->symbol);
     }
-
-    printf("\n");
 }
 
 /* Files parsing */
 struct vector *cmd_file_parse(void)
 {
-    printf("> parsing files : ");
     struct vector *v = vector_init(FILE_CAPACITY, NULL);
     if (!v)
         errx(1, ERR_NO_MEMORY_AVAILABLE, "file parsing");
@@ -55,13 +49,9 @@ struct vector *cmd_file_parse(void)
         if (curr->symbol[0] == '-')
             errx(1, ERR_UNKNOWN_PREDICATE, "file parsing", curr->symbol);
 
-        printf("%s ", curr->symbol);
-
         if (!vector_push(v, curr->symbol))
             errx(1, ERR_NO_MEMORY_AVAILABLE, "file parsing");
     }
-
-    printf("\n");
 
     if (vector_size(v) == 0 && !vector_push(v, "."))
         errx(1, ERR_NO_MEMORY_AVAILABLE, "file parsing");
@@ -72,29 +62,34 @@ struct vector *cmd_file_parse(void)
 /* Expression parsing */
 #include "expression/parser.h"
 #include "expression/tokens/action_print.h"
+#include "expression/tokens/operator_and.h"
 
 int cmd_expression_init(void)
 {
-
     if (!tok_util_add_expression("-print", 1, nud_action_print,
         led_action_print))
         return 0;
     return 1;
 }
 
+static int contains_action(struct ast_node *ast)
+{
+    if (!ast)
+        return 0;
+
+    return token_is_action(ast->type) || contains_action(ast->left) ||
+           contains_action(ast->right);
+}
+
 struct ast_node *cmd_expression_parse(void)
 {
-    printf("> parsing expressions : ");
-
-    const struct token *curr = tok_peek();
-    if (!curr || curr->type != EXPRESSION)
-    {
-        printf("\n");
-        return NULL;
-    }
+    //const struct token *curr = tok_peek();
+    //if (!curr || curr->type != EXPRESSION)
+    //    return NULL;
 
     struct ast_node *ast = expression_parse(0);
-    printf("\n");
+    if (!ast || !contains_action(ast))
+        ast = ast_make(TOKEN_OPERATOR_AND, ast, nud_action_print());
 
     return ast;
 }

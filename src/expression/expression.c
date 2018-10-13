@@ -5,9 +5,14 @@
 
 void *expression_parse(int mbp)
 {
-    const struct token *curr = tok_next();
-    if (!curr || curr->type != EXPRESSION)
+    const struct token *curr = tok_peek();
+    if (!curr)
+        return NULL;
+
+    if (curr->type != EXPRESSION)
         errx(1, ERR_INVALID_TOKEN, tok_at_str(tok_cur_index() - 1));
+
+    curr = tok_next();
 
     void *left_ctx = curr->nud();
 
