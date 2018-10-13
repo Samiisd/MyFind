@@ -2,13 +2,14 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror -pedantic -g -Isrc
 LDFLAGS =
 
-VPATH = src src/hashmap src/tokenizer src/expression src/vector
+VPATH = src src/hashmap src/tokenizer src/expression src/vector src/string
 
 all: myfind
 
 # GENERATE My Find
 OBJS = 	myfind.o hash_map.o tokenizer.o tokparsing.o expression.o util.o\
-		options.o vector.o cmdline.o options.o ast.o file_explorer.o
+		options.o vector.o cmdline.o options.o ast.o file_explorer.o\
+		string.o
 
 myfind: $(OBJS)
 
@@ -23,4 +24,4 @@ check: myfind
 
 # CLEAN
 clean:
-	$(RM) -r myfind $(OBJS)
+	$(RM) -r myfind $(OBJS) $(TESTS_LOG)

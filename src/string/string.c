@@ -23,7 +23,7 @@ struct string *string_make(size_t capacity)
 
 static int string_putchar(struct string *str, const char c)
 {
-    if (str->index >= str->capacity)
+    if (str->index + 1 >= str->capacity)
     {
         char *new_buffer = realloc(str->buffer, str->capacity * 2);
         if (!new_buffer)
@@ -33,6 +33,7 @@ static int string_putchar(struct string *str, const char c)
     }
 
     str->buffer[str->index++] = c;
+    str->buffer[str->index] = '\0';
     return 1;
 }
 
@@ -41,10 +42,7 @@ int string_append(struct string *str, const char *cstr)
     while (*cstr && string_putchar(str, *(cstr++)))
         continue;
 
-    if (!cstr)
-        return 0;
-    
-    return string_putchar(str, '\0');
+    return *cstr == '\0';
 }
 
 size_t string_size(struct string *str)
@@ -57,7 +55,7 @@ void string_resize(struct string *str, size_t new_size)
     if (new_size >= str->index)
         return;
     str->index = new_size;
-    string_putchar(str, '\0');
+    str->buffer[str->index] = '\0';
 }
 
 void string_free(struct string *str)

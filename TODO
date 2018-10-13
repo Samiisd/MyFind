@@ -8,14 +8,14 @@
     - Directories   : YES
     - Expressions   : YES
 
-- Threshold 0 : NO
+- Threshold 0 : YES
     - parsing 0 or more command line arguments              : YES
-    - Printing recursively filenames in given directories   : NO
+    - Printing recursively filenames in given directories   : YES
 
-- Threshold 1 : NO
+- Threshold 1 : YES
     - parsing 0 or more options command line arguments  : YES
     - handling all options                              : YES
-    - taking into account parsed options                : NO
+    - taking into account parsed options                : YES
 
 - Threshold 2 : NO
     - handling 0 or 1 expression            : YES
@@ -54,5 +54,6 @@
 
 - Test Suite : NO
     - Bash script   : YES
-    - Simple tests  : 1 (not enough)
+    - Simple tests  : 7
+    - Medium tests  : 1 (not enough)
     - Hard tests    : NO
