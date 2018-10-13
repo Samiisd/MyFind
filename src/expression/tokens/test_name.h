@@ -9,8 +9,6 @@
 
 #include "errors.h"
 
-#define BP_TEST_NAME 1
-
 struct ast_node *nud_test_name(void)
 {
     const char *name_to_match = tok_next_str();

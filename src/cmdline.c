@@ -68,13 +68,13 @@ struct vector *cmd_file_parse(void)
 
 int cmd_expression_init(void)
 {
-    int res = tok_util_add_expression("-print", 1, nud_action_print,
+    int res = tok_util_add_expression("-print", BP_OP_AND, nud_action_print,
                                       led_action_print) &&
               tok_util_add_expression("-a", BP_OP_AND, nud_operator_and,
                                       led_operator_and) &&
               tok_util_add_expression("-o", BP_OP_OR, nud_operator_or,
                                       led_operator_or) &&
-              tok_util_add_expression("-name", BP_TEST_NAME, nud_test_name,
+              tok_util_add_expression("-name", BP_OP_AND, nud_test_name,
                                       led_test_name);
     return res;
 }

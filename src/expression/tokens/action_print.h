@@ -8,14 +8,14 @@
 
 #include "errors.h"
 
-struct ast_node *led_action_print(struct ast_node *left_ctx)
-{
-    return ast_make(TOKEN_ACTION_PRINT, left_ctx, NULL);
-}
-
 struct ast_node *nud_action_print(void)
 {
-    return led_action_print(NULL);
+    return ast_make(TOKEN_ACTION_PRINT, NULL, NULL);
+}
+
+struct ast_node *led_action_print(struct ast_node *left_ctx)
+{
+    return ast_make(TOKEN_OPERATOR_AND, left_ctx, nud_action_print());
 }
 
 #endif /* ACTION_PRINT_H */
