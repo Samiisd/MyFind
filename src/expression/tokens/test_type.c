@@ -1,13 +1,8 @@
-#ifndef TEST_TYPE_H
-#define TEST_TYPE_H
+#include "expression/parser.h"
+#include "expression/tokens/tokens.h"
+#include "errors.h"
 
 #include <stddef.h>
-
-#include "expression/parser.h"
-#include "expression/ast.h"
-#include "expression/tokens/tokens.h"
-
-#include "errors.h"
 
 struct ast_node *nud_test_type(void)
 {
@@ -42,4 +37,25 @@ struct ast_node *led_test_type(struct ast_node *left_ctx)
     return ast_make(TOKEN_OPERATOR_AND, left_ctx, nud_test_type());
 }
 
-#endif /* TEST_TYPE_H */
+int test_handle_type(const struct ast_node *ast, struct stat *st)
+{
+    switch (ast->data[0][0])
+    {
+        case 'b':
+            return S_ISBLK(st->st_mode);
+        case 'c':
+            return S_ISCHR(st->st_mode);
+        case 'd':
+            return S_ISDIR(st->st_mode);
+        case 'f':
+            return S_ISREG(st->st_mode);
+        case 'l':
+            return S_ISLNK(st->st_mode);
+        case 'p':
+            return S_ISFIFO(st->st_mode);
+        case 's':
+            return S_ISSOCK(st->st_mode);
+    }
+
+    return 0;
+}

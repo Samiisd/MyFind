@@ -5,7 +5,6 @@
 #include "string/string.h"
 
 #define _XOPEN_SOURCE 500
-#include <fnmatch.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -30,29 +29,6 @@ void fe_free(struct file_explorer *fe)
     free(fe);
 }
 
-static int test_handle_type(struct stat *st, const struct ast_node *ast)
-{
-    switch (ast->data[0][0])
-    {
-        case 'b':
-            return S_ISBLK(st->st_mode);
-        case 'c':
-            return S_ISCHR(st->st_mode);
-        case 'd':
-            return S_ISDIR(st->st_mode);
-        case 'f':
-            return S_ISREG(st->st_mode);
-        case 'l':
-            return S_ISLNK(st->st_mode);
-        case 'p':
-            return S_ISFIFO(st->st_mode);
-        case 's':
-            return S_ISSOCK(st->st_mode);
-    }
-
-    return 0;
-}
-
 static int run_ast_filter(struct file_explorer *fe, const struct string *path,
                           const struct ast_node *ast, struct stat *st)
 {
@@ -65,10 +41,9 @@ static int run_ast_filter(struct file_explorer *fe, const struct string *path,
             printf("%s\n", path->buffer);
             return 1;
         case TOKEN_TEST_NAME:
-            return fnmatch(ast->data[0], path->buffer +
-                           string_search_last(path, '/') + 1, 0) == 0;
+            return test_handle_name(ast, path);
         case TOKEN_TEST_TYPE:
-            return test_handle_type(st, ast);
+            return test_handle_type(ast, st);
         case TOKEN_OPERATOR_AND:
             return run_ast_filter(fe, path, ast->left, st) &&
                    run_ast_filter(fe, path, ast->right, st);

@@ -61,11 +61,7 @@ struct vector *cmd_file_parse(void)
 
 /* Expression parsing */
 #include "expression/parser.h"
-#include "expression/tokens/action_print.h"
-#include "expression/tokens/operator_and.h"
-#include "expression/tokens/operator_or.h"
-#include "expression/tokens/test_name.h"
-#include "expression/tokens/test_type.h"
+#include "expression/tokens/tokens.h"
 
 int cmd_expression_init(void)
 {

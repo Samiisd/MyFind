@@ -1,7 +1,5 @@
-#ifndef TEST_NAME_H
-#define TEST_NAME_H
-
 #include <stddef.h>
+#include <fnmatch.h>
 
 #include "expression/parser.h"
 #include "expression/ast.h"
@@ -28,4 +26,8 @@ struct ast_node *led_test_name(struct ast_node *left_ctx)
     return ast_make(TOKEN_OPERATOR_AND, left_ctx, nud_test_name());
 }
 
-#endif /* TEST_NAME_H */
+int test_handle_name(const struct ast_node *ast, const struct string *path)
+{
+    int offset = string_search_last(path, '/') + 1;
+    return fnmatch(ast->data[0], path->buffer + offset, 0) == 0;
+}

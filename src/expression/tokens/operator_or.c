@@ -1,6 +1,3 @@
-#ifndef OPERATOR_OR_H
-#define OPERATOR_OR_H
-
 #include <stddef.h>
 
 #include "expression/parser.h"
@@ -8,8 +5,6 @@
 #include "expression/tokens/tokens.h"
 
 #include "errors.h"
-
-#define BP_OP_OR 1
 
 struct ast_node *led_operator_or(struct ast_node *left_ctx)
 {
@@ -24,5 +19,3 @@ struct ast_node *nud_operator_or(void)
     errx(1, ERR_BAD_TOKEN_USE, "handling binary operator", "-o");
     return NULL;
 }
-
-#endif /* OPERATOR_OR_H */
