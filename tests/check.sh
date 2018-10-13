@@ -53,7 +53,7 @@ do
         echo $stdout_log > "$3/log_stdout_$nb_tests"
     else
         print_success "OK"
-#        rm $stdout_corr $stdout_totest
+        rm $stdout_corr $stdout_totest
     fi
     echo
 
@@ -72,7 +72,7 @@ if [ $nb_tests_failed -ne 0 ]; then
     exit 0
 fi
 
-#rm -fr "$3"
+rm -fr "$3"
 print_success "All tests passed successfully!"
 echo
 

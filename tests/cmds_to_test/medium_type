@@ -1,0 +1,1 @@
+-type d -name '*es*' -o -type f -name '*.h'
