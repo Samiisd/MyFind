@@ -6,8 +6,8 @@
 
 #define TOK_MAP_SIZE 50
 
-typedef void *(*nud_fnct)(void);
-typedef void *(*led_fnct)(void *left_ctx);
+typedef struct ast_node *(*nud_fnct)(void);
+typedef struct ast_node *(*led_fnct)(struct ast_node *left_ctx);
 
 enum type
 {

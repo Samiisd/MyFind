@@ -12,7 +12,7 @@ void *expression_parse(int mbp)
     void *left_ctx = curr->nud();
 
     curr = tok_peek();
-    if (curr->type != EXPRESSION)
+    if (curr && curr->type != EXPRESSION)
         errx(1, ERR_INVALID_TOKEN, tok_at_str(tok_cur_index() - 1));
 
     while (curr && curr->bp > mbp)

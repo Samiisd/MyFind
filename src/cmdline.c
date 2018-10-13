@@ -71,8 +71,18 @@ struct vector *cmd_file_parse(void)
 
 /* Expression parsing */
 #include "expression/parser.h"
+#include "expression/tokens/action_print.h"
 
-struct tree_node *cmd_expression_parse(void)
+int cmd_expression_init(void)
+{
+
+    if (!tok_util_add_expression("-print", 1, nud_action_print,
+        led_action_print))
+        return 0;
+    return 1;
+}
+
+struct ast_node *cmd_expression_parse(void)
 {
     printf("> parsing expressions : ");
 
@@ -83,7 +93,7 @@ struct tree_node *cmd_expression_parse(void)
         return NULL;
     }
 
-    struct tree_node *ast = expression_parse(0);
+    struct ast_node *ast = expression_parse(0);
     printf("\n");
 
     return ast;

@@ -1,0 +1,19 @@
+#ifndef TOKENS_H
+#define TOKENS_H
+
+#define TOKEN_THRESHOLD_OTHERS 0
+#define TOKEN_THRESHOLD_OPERATORS (1 << 2)
+#define TOKEN_THRESHOLD_TESTS (1 << 5)
+#define TOKEN_THRESHOLD_ACTIONS (1 << 10)
+
+enum tokens
+{
+    /* OTHERS */
+    TOKEN_STRING = TOKEN_THRESHOLD_OTHERS,
+    /* OPERATORS */
+    /* TESTS*/
+    /* ACTIONS */
+    TOKEN_ACTION_PRINT = TOKEN_THRESHOLD_ACTIONS
+};
+
+#endif /* TOKENS_H */

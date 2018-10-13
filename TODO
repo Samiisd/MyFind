@@ -27,7 +27,7 @@
     - handling all expressions              : NO
         - Or "-o"           : NO
         - And "-a"          : NO
-        - Print "-print"    : NO
+        - Print "-print"    : YES
     - taking into account all expressions   : NO
 
 - Threshold 4 : NO

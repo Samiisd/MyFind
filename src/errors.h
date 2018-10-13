@@ -3,13 +3,16 @@
 
 #include <err.h>
 
+#define ERR_DEFAULT "cannot do '%s'"
+
 /* Global Errors */
-#define ERR_NO_MEMORY_AVAILABLE "cannot do '%s' : no memory available"
+#define ERR_NO_MEMORY_AVAILABLE ERR_DEFAULT " : no memory available"
 
 /* Option Parser Errors */
-#define ERR_UNKNOWN_PREDICATE "cannot do '%s' : unknown predicate '%s'"
+#define ERR_UNKNOWN_PREDICATE ERR_DEFAULT " : unknown predicate '%s'"
 
 /* Expression Parser Errors */
-#define ERR_INVALID_TOKEN "cannot do '%s': invalid expression"
+#define ERR_INVALID_TOKEN ERR_DEFAULT " : invalid expression"
+#define ERR_BAD_TOKEN_USE ERR_DEFAULT " : bad use of '%s'"
 
 #endif /* ERRORS_H */

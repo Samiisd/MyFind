@@ -16,7 +16,8 @@ void cmd_option_parse(struct file_explorer *fe);
 /* Files Handling */
 struct vector *cmd_file_parse(void);
 
-/* Expressions Handling /*/
-struct tree_node *cmd_expression_parse(void);
+/* Expressions Handling */
+int cmd_expression_init(void);
+struct ast_node *cmd_expression_parse(void);
 
 #endif /* CMDLINE_H */
