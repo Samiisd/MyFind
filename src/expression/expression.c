@@ -26,6 +26,8 @@ void *expression_parse(int mbp)
         left_ctx = curr->led(left_ctx);
         curr = tok_peek();
 
+        if (!curr)
+            return left_ctx;
         if (curr->type != EXPRESSION)
             errx(1, ERR_INVALID_TOKEN, tok_at_str(tok_cur_index() - 1));
     }
