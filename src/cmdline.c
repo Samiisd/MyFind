@@ -80,7 +80,11 @@ int cmd_expression_init(void)
               tok_util_add_expression("-execdir", BP_OP_AND, nud_action_execdir,
                                       led_action_execdir) &&
               tok_util_add_expression("!", BP_OP_NOT, nud_operator_not,
-                                      led_operator_not);
+                                      led_operator_not) &&
+              tok_util_add_expression("(", BP_MAX, nud_operator_parenthesis_o,
+                                      led_operator_parenthesis_o) &&
+              tok_util_add_expression(")", BP_MIN, nud_operator_parenthesis_c,
+                                      led_operator_parenthesis_c);
     return res;
 }
 
@@ -95,7 +99,7 @@ static int contains_action(struct ast_node *ast)
 
 struct ast_node *cmd_expression_parse(void)
 {
-    struct ast_node *ast = expression_parse(0);
+    struct ast_node *ast = expression_parse(BP_MIN);
     if (!ast || !contains_action(ast))
         ast = ast_make(TOKEN_OPERATOR_AND, ast, nud_action_print());
 

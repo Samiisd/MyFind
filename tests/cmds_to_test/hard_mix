@@ -1,0 +1,1 @@
+-L tests src \( \( -name 't*' -o -name 'm*' \) -a \( -name '?e*' -o -name '?a' \) -a ! -name '*.c' \) -exec echo \'{}\' MATCH ! \; -o -exec echo \'{}\' do not match ! \;

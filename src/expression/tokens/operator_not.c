@@ -1,5 +1,3 @@
-#include <stddef.h>
-
 #include "expression/parser.h"
 #include "expression/ast.h"
 #include "expression/tokens/tokens.h"

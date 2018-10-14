@@ -39,11 +39,11 @@
         - closing opened filedescriptors    : YES
         - cleaning zombie processes         : YES
 
-- Threshold 5 : NO
+- Threshold 5 : YES
     - Operator precedences      : YES
-    - handling all expressions  : NO
+    - handling all expressions  : YES
         - Not "!"           : YES
-        - Parentheses "()"  : ALMOST
+        - Parentheses "()"  : YES
 
 - Threshold 6 : NO
     - handling all expressions : NO
@@ -53,8 +53,8 @@
         - User and Groups               : NO
         - Newer "-newer"                : NO
 
-- Test Suite : NO
+- Test Suite : YES
     - Bash script   : YES
-    - Simple tests  : 8
-    - Medium tests  : 3 (not enough)
-    - Hard tests    : NO
+    - Simple tests  : 11
+    - Medium tests  : 6
+    - Hard tests    : 3

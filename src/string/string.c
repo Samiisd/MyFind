@@ -2,7 +2,18 @@
 
 #include <stdlib.h>
 
-struct string *string_make(int capacity)
+struct string string_make(int capacity)
+{
+    struct string str; 
+
+    str.buffer = calloc(capacity, sizeof(char));
+    str.capacity = capacity;
+    str.index = 0;
+
+    return str;
+}
+
+struct string *string_make_ptr(int capacity)
 {
     struct string *str = malloc(sizeof(struct string));
     if (!str)
@@ -45,9 +56,14 @@ int string_append(struct string *str, const char *cstr)
     return *cstr == '\0';
 }
 
-int string_size(struct string *str)
+int string_append_n(struct string *str, const char *cstr, int n)
 {
-    return str->index;
+    int i = 0;
+
+    while (i < n && cstr[i] && string_putchar(str, cstr[i]))
+        i++;
+
+    return *cstr == '\0';
 }
 
 void string_resize(struct string *str, int new_size)
@@ -56,10 +72,4 @@ void string_resize(struct string *str, int new_size)
         return;
     str->index = new_size;
     str->buffer[str->index] = '\0';
-}
-
-void string_free(struct string *str)
-{
-    free(str->buffer);
-    free(str);
 }

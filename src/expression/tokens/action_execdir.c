@@ -36,26 +36,27 @@ int handle_action_execdir(const struct ast_node *ast,
 {
     int last_slash = string_search_last(path, '/');
 
-    struct string *new_name = string_make(string_size(path) + 3);
+    struct string *new_name = string_make_ptr(string_size(path) + 3);
     string_append(new_name, "./");
     string_append(new_name, path->buffer + last_slash + 1);
 
     char *args[ast->nb_data + 1];
     for (int i = 0; i < ast->nb_data; i++)
-    {
-        if (ast->data[i][0] == '{' && ast->data[i][1] == '}')
-            args[i] = new_name->buffer;
-        else
-            args[i] = ast->data[i];
-    }
+        args[i] = expend_arg(new_name, ast->data[i]).buffer;
 
     args[ast->nb_data] = NULL;
 
     int id = fork();
+    if (id == -1)
+    {
+        warn(ERR_DEFAULT, "fork");
+        return 0;
+    }
 
     if (id == 0) /* In Child */
     {
-        string_resize(path, last_slash);
+        if (last_slash > -1)
+            string_resize(path, last_slash);
 
         if (chdir(path->buffer) != 0)
             err(1, ERR_DEFAULT, "changing directory");
@@ -66,11 +67,12 @@ int handle_action_execdir(const struct ast_node *ast,
 
     string_free(new_name);
 
-    if (id == -1)
-    {
-        warn(ERR_DEFAULT, "fork");
-        return 0;
-    }
+    int child_ret_val = 1;
+    if (waitpid(id, &child_ret_val, 0) == id)
+        child_ret_val = WEXITSTATUS(child_ret_val); 
 
-    return waitpid(id, NULL, 0);
+    for (int i = 0; i < ast->nb_data; i++)
+        free(args[i]);
+
+    return child_ret_val == 0;
 }

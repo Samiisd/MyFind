@@ -31,16 +31,27 @@ struct ast_node *led_action_exec(struct ast_node *left_ctx)
     return ast_make(TOKEN_OPERATOR_AND, left_ctx, nud_action_exec());
 }
 
+struct string expend_arg(const struct string *path, const char *cstr)
+{
+    struct string arg = string_make(50);
+    int off = 0;
+
+    while ((off = cstr_search_str(cstr, "{}")) != -1)
+    {
+        string_append_n(&arg, cstr , off);
+        string_append(&arg, path->buffer);
+        cstr += off + 2;
+    }
+
+    string_append(&arg, cstr);
+    return arg;
+}
+
 int handle_action_exec(const struct ast_node *ast, const struct string *path)
 {
     char *args[ast->nb_data + 1];
     for (int i = 0; i < ast->nb_data; i++)
-    {
-        if (ast->data[i][0] == '{' && ast->data[i][1] == '}')
-            args[i] = path->buffer;
-        else
-            args[i] = ast->data[i];
-    }
+        args[i] = expend_arg(path, ast->data[i]).buffer;
 
     args[ast->nb_data] = NULL;
 
@@ -57,5 +68,12 @@ int handle_action_exec(const struct ast_node *ast, const struct string *path)
         err(1, ERR_DEFAULT, "exec file");
     }
 
-    return waitpid(id, NULL, 0);
+    int child_ret_val = 1;
+    if (waitpid(id, &child_ret_val, 0) == id)
+        child_ret_val = WEXITSTATUS(child_ret_val); 
+
+    for (int i = 0; i < ast->nb_data; i++)
+        free(args[i]);
+
+    return child_ret_val == 0;
 }

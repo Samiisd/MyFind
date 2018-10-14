@@ -10,7 +10,6 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <errno.h>
-#include <linux/limits.h>
 
 #include "myfind.h"
 #include "errors.h"
@@ -170,7 +169,7 @@ static int fe_handle_files(struct file_explorer *fe, struct string *dirpath,
 
 int fe_find(struct file_explorer *fe, const char *dirpath)
 {
-    struct string *path_root = string_make(PATH_MAX);
+    struct string *path_root = string_make_ptr(4096);
     if (!string_append(path_root, dirpath))
     {
         warnx(ERR_NO_MEMORY_AVAILABLE, "parsing directory");

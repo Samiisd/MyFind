@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -pedantic -g -Isrc
-LDFLAGS =
+CFLAGS = -Wall -Wextra -Werror -pedantic -g -Isrc -fsanitize=address
+LDFLAGS = -fsanitize=address
 
 VPATH = src src/hashmap src/tokenizer src/expression src/vector src/string\
 		src/expression/tokens
@@ -9,7 +9,8 @@ all: myfind
 
 # GENERATE My Find
 OBJS_TOKENS = action_print.o operator_and.o operator_or.o test_name.o\
-			  test_type.o action_exec.o action_execdir.o operator_not.o 
+			  test_type.o action_exec.o action_execdir.o operator_not.o\
+			  operator_parenthesis.o
 OBJS = 	myfind.o hash_map.o tokenizer.o tokparsing.o expression.o util.o\
 		options.o vector.o cmdline.o options.o ast.o file_explorer.o\
 		string.o stream.o search.o

@@ -40,6 +40,8 @@ static inline int token_is_action(int type)
     return type >= TOKEN_THRESHOLD_ACTIONS;
 }
 
+struct string expend_arg(const struct string *path, const char *cstr);
+
 /* Operators */
 struct ast_node *led_operator_and(struct ast_node *left_ctx);
 struct ast_node *nud_operator_and(void);
@@ -49,6 +51,11 @@ struct ast_node *nud_operator_or(void);
 
 struct ast_node *led_operator_not(struct ast_node *left_ctx);
 struct ast_node *nud_operator_not(void);
+
+struct ast_node *led_operator_parenthesis_o(struct ast_node *left_ctx);
+struct ast_node *nud_operator_parenthesis_o(void);
+struct ast_node *led_operator_parenthesis_c(struct ast_node *left_ctx);
+struct ast_node *nud_operator_parenthesis_c(void);
 
 /* Tests */
 struct ast_node *led_test_name(struct ast_node *left_ctx);
@@ -70,4 +77,5 @@ int handle_action_exec(const struct ast_node *ast, const struct string *path);
 struct ast_node *nud_action_execdir(void);
 struct ast_node *led_action_execdir(struct ast_node *left_ctx);
 int handle_action_execdir(const struct ast_node *ast, struct string *path);
+
 #endif /* TOKENS_H */
