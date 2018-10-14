@@ -13,7 +13,7 @@ void tok_start(char **splitted_str, size_t nb_str)
     stream.size = nb_str;
     stream.index = 0;
 
-    stream.tok_unknown = calloc(1, sizeof(struct token *));
+    stream.tok_unknown = calloc(1, sizeof(struct token));
     if (!stream.tok_unknown)
         errx(1, ERR_NO_MEMORY_AVAILABLE, "init tokenizer engine");
 }

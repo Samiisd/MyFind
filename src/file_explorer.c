@@ -88,7 +88,7 @@ static int fe_handle_dirs(struct file_explorer *fe, struct string *dirpath,
 
     int fd = open(dirpath->buffer, O_RDONLY | O_CLOEXEC);
 
-    DIR *curr_dir;
+    DIR *curr_dir = NULL;
     if (fd == -1 || !(curr_dir = fdopendir(fd)))
     {
         warn(ERR_DEFAULT, "opening directory");
