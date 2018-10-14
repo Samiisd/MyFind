@@ -1,10 +1,8 @@
+#define _XOPEN_SOURCE 700
+//#define _GNU_SOURCE
+
+#include <fcntl.h>
 #include <stdlib.h>
-
-#include "myfind.h"
-#include "errors.h"
-#include "string/string.h"
-
-#define _XOPEN_SOURCE 500
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -13,6 +11,10 @@
 #include <dirent.h>
 #include <errno.h>
 #include <linux/limits.h>
+
+#include "myfind.h"
+#include "errors.h"
+#include "string/string.h"
 
 struct file_explorer *fe_init()
 {
@@ -40,8 +42,10 @@ static int run_ast_filter(struct file_explorer *fe, const struct string *path,
         case TOKEN_ACTION_PRINT:
             printf("%s\n", path->buffer);
             return 1;
+        case TOKEN_ACTION_EXEC:
+            return handle_action_exec(ast, path);
         case TOKEN_TEST_NAME:
-            return test_handle_name(ast, path);
+            return handle_test_name(ast, path);
         case TOKEN_TEST_TYPE:
             return test_handle_type(ast, st);
         case TOKEN_OPERATOR_AND:
@@ -80,8 +84,10 @@ static int fe_handle_dirs(struct file_explorer *fe, struct string *dirpath,
     
     int res;
 
-    DIR *curr_dir = opendir(dirpath->buffer);
-    if (!curr_dir)
+    int fd = open(dirpath->buffer, O_RDONLY | O_CLOEXEC);
+
+    DIR *curr_dir;
+    if (fd == -1 || !(curr_dir = fdopendir(fd)))
     {
         warn(ERR_DEFAULT, "opening directory");
         res = 0;
@@ -95,8 +101,8 @@ static int fe_handle_dirs(struct file_explorer *fe, struct string *dirpath,
         run_ast_filter(fe, dirpath, fe->ast, st);
     }
 
-    if (curr_dir)
-        closedir(curr_dir);
+    if (fd != -1)
+        close(fd);
     return res;
 }
 

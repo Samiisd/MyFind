@@ -26,7 +26,7 @@ struct ast_node *led_test_name(struct ast_node *left_ctx)
     return ast_make(TOKEN_OPERATOR_AND, left_ctx, nud_test_name());
 }
 
-int test_handle_name(const struct ast_node *ast, const struct string *path)
+int handle_test_name(const struct ast_node *ast, const struct string *path)
 {
     int offset = string_search_last(path, '/') + 1;
     return fnmatch(ast->data[0], path->buffer + offset, 0) == 0;

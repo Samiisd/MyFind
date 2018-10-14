@@ -72,9 +72,11 @@ int cmd_expression_init(void)
               tok_util_add_expression("-o", BP_OP_OR, nud_operator_or,
                                       led_operator_or) &&
               tok_util_add_expression("-name", BP_OP_AND, nud_test_name,
-                                      led_test_name);
+                                      led_test_name) &&
               tok_util_add_expression("-type", BP_OP_AND, nud_test_type,
-                                      led_test_type);
+                                      led_test_type) &&
+              tok_util_add_expression("-exec", BP_OP_AND, nud_action_exec,
+                                      led_action_exec);
     return res;
 }
 

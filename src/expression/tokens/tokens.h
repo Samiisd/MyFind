@@ -1,7 +1,6 @@
 #ifndef TOKENS_H
 #define TOKENS_H
 
-#define _XOPEN_SOURCE 500
 #include <sys/stat.h>
 
 #include "expression/ast.h"
@@ -29,7 +28,8 @@ enum tokens
     TOKEN_TEST_NAME = TOKEN_THRESHOLD_TESTS,
     TOKEN_TEST_TYPE,
     /* ACTIONS */
-    TOKEN_ACTION_PRINT = TOKEN_THRESHOLD_ACTIONS
+    TOKEN_ACTION_PRINT = TOKEN_THRESHOLD_ACTIONS,
+    TOKEN_ACTION_EXEC
 };
 
 static inline int token_is_action(int type)
@@ -47,7 +47,7 @@ struct ast_node *nud_operator_or(void);
 /* Tests */
 struct ast_node *led_test_name(struct ast_node *left_ctx);
 struct ast_node *nud_test_name(void);
-int test_handle_name(const struct ast_node *ast, const struct string *path);
+int handle_test_name(const struct ast_node *ast, const struct string *path);
 
 struct ast_node *led_test_type(struct ast_node *left_ctx);
 struct ast_node *nud_test_type(void);
@@ -56,5 +56,9 @@ int test_handle_type(const struct ast_node *ast, struct stat *st);
 /* Actions */
 struct ast_node *nud_action_print(void);
 struct ast_node *led_action_print(struct ast_node *left_ctx);
+
+struct ast_node *nud_action_exec(void);
+struct ast_node *led_action_exec(struct ast_node *left_ctx);
+int handle_action_exec(const struct ast_node *ast, const struct string *path);
 
 #endif /* TOKENS_H */
