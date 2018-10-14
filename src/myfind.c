@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
     tok_init();
     cmd_option_init();
     cmd_expression_init();
+    setbuf(stdout, NULL);
 
     tok_start(argv + 1, argc - 1);
 

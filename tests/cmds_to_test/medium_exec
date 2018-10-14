@@ -1,0 +1,1 @@
+-d -name '*.o' -print -o -name '*.h' -exec echo -- {} -- \;

@@ -1,0 +1,1 @@
+-name '*.h' -execdir pwd \; -execdir echo -- {} -- \;
