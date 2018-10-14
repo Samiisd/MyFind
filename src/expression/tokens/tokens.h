@@ -29,7 +29,8 @@ enum tokens
     TOKEN_TEST_TYPE,
     /* ACTIONS */
     TOKEN_ACTION_PRINT = TOKEN_THRESHOLD_ACTIONS,
-    TOKEN_ACTION_EXEC
+    TOKEN_ACTION_EXEC,
+    TOKEN_ACTION_EXECDIR
 };
 
 static inline int token_is_action(int type)
@@ -61,4 +62,8 @@ struct ast_node *nud_action_exec(void);
 struct ast_node *led_action_exec(struct ast_node *left_ctx);
 int handle_action_exec(const struct ast_node *ast, const struct string *path);
 
+struct ast_node *nud_action_execdir(void);
+struct ast_node *led_action_execdir(struct ast_node *left_ctx);
+int handle_action_execdir(const struct ast_node *ast,
+                          struct string *path);
 #endif /* TOKENS_H */

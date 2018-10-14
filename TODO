@@ -31,10 +31,10 @@
         - Print "-print"    : YES
     - taking into account all expressions   : YES
 
-- Threshold 4 : NO
-    - handling all expressions  : NO
+- Threshold 4 : YES
+    - handling all expressions  : YES
         - Exec "-exec command ;"          : YES
-        - Execdir "-execdir command ;"    : NO
+        - Execdir "-execdir command ;"    : YES
     - avoid leaks before exec   : YES
         - closing opened filedescriptors    : YES
         - cleaning zombie processes         : YES

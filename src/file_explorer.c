@@ -31,7 +31,7 @@ void fe_free(struct file_explorer *fe)
     free(fe);
 }
 
-static int run_ast_filter(struct file_explorer *fe, const struct string *path,
+static int run_ast_filter(struct file_explorer *fe, struct string *path,
                           const struct ast_node *ast, struct stat *st)
 {
     if (!ast)
@@ -44,6 +44,8 @@ static int run_ast_filter(struct file_explorer *fe, const struct string *path,
             return 1;
         case TOKEN_ACTION_EXEC:
             return handle_action_exec(ast, path);
+        case TOKEN_ACTION_EXECDIR:
+            return handle_action_execdir(ast, path);
         case TOKEN_TEST_NAME:
             return handle_test_name(ast, path);
         case TOKEN_TEST_TYPE:
@@ -103,6 +105,9 @@ static int fe_handle_dirs(struct file_explorer *fe, struct string *dirpath,
 
     if (fd != -1)
         close(fd);
+    if (curr_dir)
+        closedir(curr_dir);
+
     return res;
 }
 
