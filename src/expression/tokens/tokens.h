@@ -16,6 +16,7 @@
 
 #define BP_OP_OR 1
 #define BP_OP_AND 2
+#define BP_OP_NOT 3
 
 enum tokens
 {
@@ -24,6 +25,7 @@ enum tokens
     /* OPERATORS */
     TOKEN_OPERATOR_AND = TOKEN_THRESHOLD_OPERATORS,
     TOKEN_OPERATOR_OR,
+    TOKEN_OPERATOR_NOT,
     /* TESTS*/
     TOKEN_TEST_NAME = TOKEN_THRESHOLD_TESTS,
     TOKEN_TEST_TYPE,
@@ -45,6 +47,9 @@ struct ast_node *nud_operator_and(void);
 struct ast_node *led_operator_or(struct ast_node *left_ctx);
 struct ast_node *nud_operator_or(void);
 
+struct ast_node *led_operator_not(struct ast_node *left_ctx);
+struct ast_node *nud_operator_not(void);
+
 /* Tests */
 struct ast_node *led_test_name(struct ast_node *left_ctx);
 struct ast_node *nud_test_name(void);
@@ -64,6 +69,5 @@ int handle_action_exec(const struct ast_node *ast, const struct string *path);
 
 struct ast_node *nud_action_execdir(void);
 struct ast_node *led_action_execdir(struct ast_node *left_ctx);
-int handle_action_execdir(const struct ast_node *ast,
-                          struct string *path);
+int handle_action_execdir(const struct ast_node *ast, struct string *path);
 #endif /* TOKENS_H */

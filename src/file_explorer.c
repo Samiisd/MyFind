@@ -56,6 +56,8 @@ static int run_ast_filter(struct file_explorer *fe, struct string *path,
         case TOKEN_OPERATOR_OR:
             return run_ast_filter(fe, path, ast->left, st) ||
                    run_ast_filter(fe, path, ast->right, st);
+        case TOKEN_OPERATOR_NOT:
+            return !run_ast_filter(fe, path, ast->left, st);
     }
 
     return 0;

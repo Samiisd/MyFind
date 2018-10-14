@@ -78,7 +78,9 @@ int cmd_expression_init(void)
               tok_util_add_expression("-exec", BP_OP_AND, nud_action_exec,
                                       led_action_exec) &&
               tok_util_add_expression("-execdir", BP_OP_AND, nud_action_execdir,
-                                      led_action_execdir);
+                                      led_action_execdir) &&
+              tok_util_add_expression("!", BP_OP_NOT, nud_operator_not,
+                                      led_operator_not);
     return res;
 }
 
