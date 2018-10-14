@@ -41,7 +41,7 @@ int handle_action_exec(const struct ast_node *ast, const struct string *path)
         else
             args[i] = ast->data[i];
     }
-        
+
     args[ast->nb_data] = NULL;
 
     int id = fork();

@@ -33,11 +33,11 @@
 
 - Threshold 4 : NO
     - handling all expressions  : NO
-        - Exec "-exec command ;"          : NO
+        - Exec "-exec command ;"          : YES
         - Execdir "-execdir command ;"    : NO
-    - avoid leaks before exec   : NO
-        - closing opened filedescriptors    : NO
-        - cleaning zombie processes         : NO
+    - avoid leaks before exec   : YES
+        - closing opened filedescriptors    : YES
+        - cleaning zombie processes         : YES
 
 - Threshold 5 : NO
     - Operator precedences      : YES
